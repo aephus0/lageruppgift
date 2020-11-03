@@ -1,5 +1,8 @@
 import sys
 import keyboard
+import os
+
+lagerList = []
 
 
 class Lager:
@@ -9,14 +12,19 @@ class Lager:
         self.antal = antal
 
 
-with open('test.txt', 'r') as myFile:
+try:
+    with open('test.txt', 'r') as myFile:
+        if os.stat('test.txt').st_size == 0:
+            print("Cannot read contents of file. Maybe the file is empty?")
+except FileNotFoundError:
+    print("No file to open. Is there a 'test.txt' in the working directory?")
 
 
 count = 0
-lagerList = []
-lagerList.append(Lager("Playstation 5 (Physical Edition)", "5990", "5"))
-lagerList.append(Lager("Playstation 5 (Digital Edition)", "4990", "3"))
-lagerList.append(Lager("BloodBorne Kart", "420", "Slutsåld"))
+
+#lagerList.append(Lager("Playstation 5 (Physical Edition)", "5990", "5"))
+#lagerList.append(Lager("Playstation 5 (Digital Edition)", "4990", "3"))
+#lagerList.append(Lager("BloodBorne Kart", "420", "Slutsåld"))
 
 
 dictb = {}
