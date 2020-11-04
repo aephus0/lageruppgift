@@ -11,6 +11,7 @@ from keyboard import wait
 lagerList = []
 test = {}
 dictb = {}
+count = 0
 
 
 def clear():
@@ -37,15 +38,26 @@ def addEntry():
             temp.write(str(dictb[i]))
 
 
+def removeEntry():
+    print("Please enter the name of the item you wish to remove. NOTE: Write the EXACT name of the item!")
+    tempInput = str(input())
+    dictb.pop(tempInput, None)
+    for key in dictb:
+        lagerList[key] = ("{}{}{}".format(key.namn, key.pris, key.antal))
+
+    with open('test.txt', 'w') as temp:
+        for i in dictb:
+            temp.write(str(dictb[i]))
+
+
 def showLogic():
     for lager in lagerList:
-        count = int()
-        count = str(count)
-        print(count + ': ' + '{}\n{} SEK\nLagerstatus: {}\n'.format(
+        count = int(count + 1)
+
+        print(str(count) + ': ' + '{}\n{} SEK\nLagerstatus: {}\n'.format(
             lager.namn, lager.pris, lager.antal))
 
 
-clear()
 if os.path.isfile('test.txt'):
     print("'test.txt' found!")
 else:
@@ -78,31 +90,31 @@ print("Y/y för 'JA' och N/n för 'NEJ'\n")
 while True:
     try:
         if keyboard.is_pressed("y"):
+
             if os.stat('test.txt').st_size == 0:
                 print("No items to show!")
             else:
-                for lager in lagerList:
-
-                    print('{}\n{} SEK\nLagerstatus: {}st\n'.format(
-                        lager.namn, lager.pris, lager.antal))
+                showLogic()
             break
-        elif keyboard.is_pressed("n"):
+        elif keyboard.is_pressed("esc"):
             sys.exit()
     except:
         sys.exit()
 
 print("Vill du lägga till eller ta bort en artikel?")
 
-addEntry()
+removeEntry()
 
-
-# while True:
-#   try:
-#      if keyboard.is_pressed('y'):
-#         for lager in lagerList:
-#            count = int(count + 1)
-#           str(count)
-#          print(count + ': ' + '{}\n{} SEK\nLagerstatus: {}\n'.format(
-#             lager.namn, lager.pris, lager.antal))
-# else:
-#   break
+while True:
+    try:
+        if keyboard.is_pressed("y"):
+            for lager in lagerList:
+                count = int(count + 1)
+                str(count)
+                print(count + ': ' + '{}\n{} SEK\nLagerstatus: {}\n'.format(
+                    lager.namn, lager.pris, lager.antal))
+                break
+        elif keyboard.is_pressed("esc"):
+            sys.exit()
+    except:
+        sys.exit()
