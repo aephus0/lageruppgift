@@ -1,3 +1,4 @@
+import pymongo
 import sys
 from sys import path
 from time import time
@@ -14,15 +15,26 @@ dictb = {}
 count = 0
 
 
+pw = str(input("Please enter the Staging-User password: "))
+
+
+client = pymongo.MongoClient(
+    "mongodb+srv://staging-user:{}@varor.igatz.mongodb.net/varor?retryWrites=true&w=majority".format(pw))
+db = client["Varor-Database"]
+col = db["Varor"]
+
+pw = None
+
+
 def clear():
     os.system('cls')
 
 
 class Lager:
-    def __init__(self, namn, pris, antal):
-        self.namn = namn
-        self.pris = pris
-        self.antal = antal
+    def __init__(self, name, count, price):
+        self.namn = name
+        self.pris = count
+        self.antal = price
 
 
 def addEntry():
@@ -51,11 +63,8 @@ def removeEntry():
 
 
 def showLogic():
-    for lager in lagerList:
-        count = int(count + 1)
-
-        print(str(count) + ': ' + '{}\n{} SEK\nLagerstatus: {}\n'.format(
-            lager.namn, lager.pris, lager.antal))
+    for x in col.find():
+        print(x)
 
 
 if os.path.isfile('test.txt'):
@@ -90,31 +99,32 @@ print("Y/y för 'JA' och N/n för 'NEJ'\n")
 while True:
     try:
         if keyboard.is_pressed("y"):
-
+            keyboard.send('backspace')
+            time.sleep(0.5)
             if os.stat('test.txt').st_size == 0:
                 print("No items to show!")
             else:
                 showLogic()
             break
-        elif keyboard.is_pressed("esc"):
+        elif keyboard.is_pressed("n"):
+            keyboard.send('backspace')
+            time.sleep(0.5)
             sys.exit()
     except:
         sys.exit()
 
 print("Vill du lägga till eller ta bort en artikel?")
 
-removeEntry()
-
 while True:
     try:
         if keyboard.is_pressed("y"):
-            for lager in lagerList:
-                count = int(count + 1)
-                str(count)
-                print(count + ': ' + '{}\n{} SEK\nLagerstatus: {}\n'.format(
-                    lager.namn, lager.pris, lager.antal))
-                break
-        elif keyboard.is_pressed("esc"):
+            keyboard.send('backspace')
+            time.sleep(0.5)
+            showLogic()
+            break
+        elif keyboard.is_pressed("n"):
+            keyboard.send('backspace')
+            time.sleep(0.5)
             sys.exit()
     except:
         sys.exit()
